@@ -14,6 +14,7 @@ print(response.status_code)
 print(response.headers['X-HANDLED-BY'])
 date = response.headers['Date']
 timestamp = time.mktime(datetime.datetime.strptime(date, "%a, %d %b %Y %H:%M:%S GMT").timetuple())
+<<<<<<< HEAD
 xhandled = response.headers['X-HANDLED-BY']
 # Data to be written
 dictionary = {
@@ -26,6 +27,12 @@ json_object = json.dumps(dictionary, indent=4)
 # Writing to sample.json
 with open("sample.json", "x") as outfile:
     outfile.write(json_object)
+=======
+
+
+
+
+>>>>>>> ca96fe609bef77f65bfb8915e91f6ae6caa9401e
 
 # data2 = {['X-HANDLED-BY']}
 #with open("myfile.json", "w") as j:
