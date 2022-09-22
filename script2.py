@@ -13,7 +13,7 @@ print(response.headers)
 print(response.status_code)
 print(response.headers['X-HANDLED-BY'])
 date = response.headers['Date']
-print(time.mktime(datetime.datetime.strptime(date, "%a, %d %b %Y %H:%M:%S GMT").timetuple()))
+timestamp = time.mktime(datetime.datetime.strptime(date, "%a, %d %b %Y %H:%M:%S GMT").timetuple())
 
 
 
