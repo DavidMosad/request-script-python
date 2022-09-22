@@ -13,9 +13,9 @@ print(response.headers)
 print(response.status_code)
 print(response.headers['X-HANDLED-BY'])
 date = response.headers['Date']
-print(time.mktime(datetime.datetime.strptime(date, "%a, %d %b %Y %H:%M:%S GMT").timetuple()))
+timestamp = time.mktime(datetime.datetime.strptime(date, "%a, %d %b %Y %H:%M:%S GMT").timetuple())
 
 
-
-
-
+data2 = {'X-HANDLED-BY'}
+with open("myfile.json", "w") as j:
+	json.dump(data2, j)
