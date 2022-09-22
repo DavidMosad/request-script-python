@@ -1,5 +1,6 @@
 import json
 import requests 
+import time
 
 data = {
     'vote': 'dogs'
@@ -10,5 +11,10 @@ response = requests.post(url,data=data)
 print(response.headers)
 print(response.status_code)
 print(response.headers['X-HANDLED-BY'])
+date = response.headers['Date']
+time.mktime(date)
+
+
+
 
 
