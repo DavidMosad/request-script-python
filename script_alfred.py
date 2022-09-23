@@ -54,14 +54,36 @@ def send_votes(thread_id: int, quit: threading.Event):
             jsondata = json.load(jf)
         xhandled = r.headers['X-HANDLED-BY']
         timestamp = time.mktime(dt.now().timetuple())
-        jsondata[xhandled] = {timestamp : 0}
-        
-        with open(jsonFile, 'w') as json_file:
-            json.dump(jsondata, json_file)
+        timestampData = { 
+            xhandled : {timestamp}
+            }
+        jsonTimestamp = json.dump(timestampData)
+        print(jsonTimestamp)
 
         if not xhandled in jsondata:
+            its = 1
+            jsondata[xhandled] = {timestamp : its}
+        
+            with open(jsonFile, 'w') as json_file:
+                json.dump(jsondata, json_file)
+
 
         else:
+            if not jsonTimestamp in jsondata:
+                its = 1
+                jsondata[xhandled] = {timestamp : its}
+        
+                with open(jsonFile, 'w') as json_file:
+                    json.dump(jsondata, json_file)
+            
+            else:
+                its += 1
+                jsondata[xhandled] = {timestamp : its}
+
+                with open(jsonFile, 'w') as json_file:
+                    json.dump(jsondata, json_file)
+
+
 
 
 
