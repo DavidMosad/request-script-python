@@ -2,9 +2,11 @@
 # coding: utf-8
 # vi: tabstop=8 expandtab shiftwidth=4 softtabstop=4
 
+from os import times
 import sys
 import requests
 import threading
+import json
 import random
 import time
 import concurrent.futures as cf
@@ -16,8 +18,12 @@ URL = 'http://votingappg2-testchargeg2.westus.cloudapp.azure.com'
 jsonFile = "./data.json"
 
 if os.path.exists(jsonFile) == False:
-    
+    dictionary = {
+}
+    json_object = json.dumps(dictionary, indent=4)
 
+    with open(jsonFile, "x") as outfile:
+        outfile.write(json_object)
 
 def make_form(value):
     f = Form({'vote': value})
@@ -42,7 +48,22 @@ def send_votes(thread_id: int, quit: threading.Event):
             print(f"[{dt.now()}] thread {thread_id}, request {j}: Error {r.status_code}")
             continue
 
-        print(f"[{time.mktime(dt.now().timetuple())}] thread {thread_id}, request {j}: {r.headers['X-HANDLED-BY']}")
+        print(f"[{dt.now()}] thread {thread_id}, request {j}: {r.headers['X-HANDLED-BY']}")
+
+        with open(jsonFile) as jf:
+            jsondata = json.load(jf)
+        xhandled = r.headers['X-HANDLED-BY']
+        timestamp = time.mktime(dt.now().timetuple())
+        jsondata[xhandled] = {timestamp : 0}
+        
+        with open(jsonFile, 'w') as json_file:
+            json.dump(jsondata, json_file)
+
+        if not xhandled in jsondata:
+
+        else:
+
+
 
 
 def main():
