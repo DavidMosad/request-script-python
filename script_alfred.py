@@ -10,18 +10,24 @@ import time
 import concurrent.futures as cf
 from datetime import datetime as dt
 from requests_toolbelt.multipart.encoder import MultipartEncoder as Form
+import os.path
 
-URL = "http://votingapp-b4g4ld-rg.eastus.cloudapp.azure.com"
+URL = 'http://votingappg2-testchargeg2.westus.cloudapp.azure.com'
+jsonFile = "./data.json"
+
+if os.path.exists(jsonFile) == False:
+    
 
 
 def make_form(value):
-    f = Form({'vote': 'value'})
+    f = Form({'vote': value})
     return f.content_type, f.to_string()
 
 
 f_cats_ct, f_cats = make_form('Cats')
 f_dogs_ct, f_dogs = make_form('Dogs')
 f_reset_ct, f_reset = make_form('Reset')
+
 
 quit = threading.Event()
 
@@ -36,11 +42,11 @@ def send_votes(thread_id: int, quit: threading.Event):
             print(f"[{dt.now()}] thread {thread_id}, request {j}: Error {r.status_code}")
             continue
 
-        print(f"[{dt.now()}] thread {thread_id}, request {j}: {r.headers['X-HANDLED-BY']}")
+        print(f"[{time.mktime(dt.now().timetuple())}] thread {thread_id}, request {j}: {r.headers['X-HANDLED-BY']}")
 
 
 def main():
-    print(f"[{dt.now()}] DÃ©but du test")
+    print(f"[{time.mktime(dt.now().timetuple())}]  DÃ©but du test")
 
     quits = []
     with cf.ThreadPoolExecutor(10) as exc:
