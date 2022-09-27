@@ -2,13 +2,12 @@ JSONObject json;
 
 void setup() {
   size(3000, 1000);
-  background( random (254), random (254), random (254));
   json = loadJSONObject("./data.json");
-  frameRate(1);
+  noLoop();
 }
 
 void draw() {
-  
+    background( random (254), random (254), random (254));
     String[] keys;
     keys = (String[]) json.keys().toArray(new String[json.size()]);
   
@@ -46,11 +45,15 @@ void draw() {
       */
       int y = (height-(xhandled.getInt(timekeys[j])*((height-100)/6)));
       int x = (int(timekeys[j])-timeweight);
-      vertex(x,y);
+      vertex(x+50,y);
       timeweight = int(timekeys[j]);
       print(" x=");
       print(timeweight);
     }
     endShape();
   }
+}
+
+void mousePressed() {
+  redraw();
 }
