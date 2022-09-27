@@ -13,6 +13,8 @@ import concurrent.futures as cf
 from datetime import datetime as dt
 from requests_toolbelt.multipart.encoder import MultipartEncoder as Form
 import os.path
+from collections import defaultdict, Counter
+
 
 URL = 'http://votingappg2-testchargeg2.westus.cloudapp.azure.com'
 jsonFile = "./data.json"
@@ -37,6 +39,8 @@ f_reset_ct, f_reset = make_form('Reset')
 
 quit = threading.Event()
 
+jsonData = defaultdict(Counter)
+
 
 def send_votes(thread_id: int, quit: threading.Event):
     j = 0
@@ -50,42 +54,28 @@ def send_votes(thread_id: int, quit: threading.Event):
 
         print(f"[{dt.now()}] thread {thread_id}, request {j}: {r.headers['X-HANDLED-BY']}")
 
-        with open(jsonFile) as jf:
-            jsondata = json.load(jf)
-        xhandled = r.headers['X-HANDLED-BY']
-        timestamp = time.mktime(dt.now().timetuple())
-        timestampData = { 
-            xhandled : {timestamp}
+        """
+        { 
+            "<instance>": {
+                "<timestamp>": <nb_req>
             }
-        jsonTimestamp = json.dump(timestampData)
-        print(jsonTimestamp)
+        }
+        """
+        xhandled = r.headers['X-HANDLED-BY']
+        timestamp = str(int(dt.now().timestamp()))
+        jsonData[xhandled][timestamp] += 1
 
-        if not xhandled in jsondata:
-            its = 1
-            jsondata[xhandled] = {timestamp : its}
+        """
+        if xhandled not in jsonData:
+            jsonData[xhandled] = {}
         
-            with open(jsonFile, 'w') as json_file:
-                json.dump(jsondata, json_file)
-
-
-        else:
-            if not jsonTimestamp in jsondata:
-                its = 1
-                jsondata[xhandled] = {timestamp : its}
+        if timestamp not in jsonData[xhandled]:
+            jsonData[xhandled][timestamp] = 0
         
-                with open(jsonFile, 'w') as json_file:
-                    json.dump(jsondata, json_file)
-            
-            else:
-                its += 1
-                jsondata[xhandled] = {timestamp : its}
+        jsonData[xhandled][timestamp] += 1
+        """
 
-                with open(jsonFile, 'w') as json_file:
-                    json.dump(jsondata, json_file)
-
-
-
-
+    return jsonData
 
 
 def main():
@@ -109,6 +99,11 @@ def main():
 
         for q in quits:
             q.set()
+    
+    print(jsonData)
+    with open (jsonFile,"w") as outfile:
+        json.dump(jsonData, outfile, indent=4)
+
 
     print(f"[{dt.now()}] Fin du test")
     return
