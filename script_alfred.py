@@ -102,7 +102,7 @@ def main():
     
     print(jsonData)
     with open (jsonFile,"w") as outfile:
-        json.dump(jsonData, outfile)
+        json.dump(jsonData, outfile, indent=4)
 
 
     print(f"[{dt.now()}] Fin du test")
