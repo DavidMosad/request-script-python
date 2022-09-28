@@ -2,13 +2,12 @@ JSONObject json;
 
 void setup() {
   size(3000, 1000);
-  background( random (254), random (254), random (254));
   json = loadJSONObject("./data.json");
-  frameRate(1);
+  noLoop();
 }
 
 void draw() {
-  
+    background( random (254), random (254), random (254));
     String[] keys;
     keys = (String[]) json.keys().toArray(new String[json.size()]);
   
@@ -29,24 +28,32 @@ void draw() {
   
   for (int i=0; i < json.size(); i++) {
     stroke(random(254), random(254), random(254));
+    strokeWeight(2);
     JSONObject xhandled = json.getJSONObject(keys[i]);
     String[] timekeys;
     timekeys = (String[]) xhandled.keys().toArray(new String[xhandled.size()]);
     int timeweight = int(timekeys[0]);
-    for (int j=0; j < xhandled.size()-1; j++){
-      String timestamp = timekeys[j];
-      int iterf = height-(height-(xhandled.getInt(timekeys[j])*((height-100)/6)));
-      int iters = height-(height-(xhandled.getInt(timekeys[j+1])*((height-100)/6)));
+    noFill();
+    beginShape();
+    for (int j=0; j < (xhandled.size()); j++){
+      /*String timestamp = timekeys[j];
+      int iterf = (height-(xhandled.getInt(timekeys[j])*((height-100)/6)));
+      int iters = (height-(xhandled.getInt(timekeys[j+1])*((height-100)/6)));
       int xf = (int(timekeys[j])-timeweight);
-      int xs = (int(timekeys[j+1])-(timeweight+1));
-      line( xf,iterf,xs,iters);
+      int xs = (int(timekeys[j+1])-(int(timekeys[j])));
+      line( xf+50,iterf,xs+50,iters);
+      */
+      int y = (height-(xhandled.getInt(timekeys[j])*((height-100)/6)));
+      int x = (int(timekeys[j])-timeweight);
+      vertex(x+50,y);
       timeweight = int(timekeys[j]);
-      
-      
+      print(" x=");
+      print(timeweight);
     }
+    endShape();
   }
-    
-    
-  
+}
 
+void mousePressed() {
+  redraw();
 }
