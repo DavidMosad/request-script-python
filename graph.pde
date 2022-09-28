@@ -4,6 +4,7 @@ void setup() {
   size(3000, 1000);
   json = loadJSONObject("./data.json");
   noLoop();
+  //frameRate(2000);
 }
 
 void draw() {
@@ -33,7 +34,7 @@ void draw() {
     String[] timekey;
     timekey = (String[]) xhandled.keys().toArray(new String[xhandled.size()]);
     int[] timekeys = int(timekey);
-    sort(timekeys);
+    timekeys = sort(timekeys);
     
   /*for(int t = 0; t < timekeysint.length; t ++) {
     String[] timekeys = append(timekeys, nf(timekeysint[i]));
@@ -52,9 +53,9 @@ void draw() {
       */
       int y = (height-(xhandled.getInt(str(timekeys[j]))*((height-100)/6)));
       int x = (int(timekeys[j])-timeweight);
-      vertex(x+50,y);
+      vertex(x+100,y);
       print(" x=");
-      print(timekey[j]);
+      print(timekeys[j]);
     }
     endShape();
   }
@@ -62,4 +63,5 @@ void draw() {
 
 void mousePressed() {
   redraw();
+  saveFrame("graphDeOuf.png");
 }
