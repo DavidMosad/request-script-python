@@ -53,7 +53,6 @@ void draw() {
       int y = (height-(xhandled.getInt(str(timekeys[j]))*((height-100)/6)));
       int x = (int(timekeys[j])-timeweight);
       vertex(x+50,y);
-      timeweight = int(timekeys[j]);
       print(" x=");
       print(timekey[j]);
     }
