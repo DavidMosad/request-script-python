@@ -56,8 +56,11 @@ void draw() {
       vertex(x+100,y);
       print(" x=");
       print(timekeys[j]);
+
     }
     endShape();
+    print("                  ");
+    print(xhandled.size());
   }
 }
 
