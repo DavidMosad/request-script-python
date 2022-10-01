@@ -4,6 +4,7 @@ void setup() {
   size(3000, 1000);
   json = loadJSONObject("./data.json");
   noLoop();
+  //frameRate(2000);
 }
 
 void draw() {
@@ -30,11 +31,18 @@ void draw() {
     stroke(random(254), random(254), random(254));
     strokeWeight(2);
     JSONObject xhandled = json.getJSONObject(keys[i]);
-    String[] timekeys;
-    timekeys = (String[]) xhandled.keys().toArray(new String[xhandled.size()]);
-    int timeweight = int(timekeys[0]);
+    String[] timekey;
+    timekey = (String[]) xhandled.keys().toArray(new String[xhandled.size()]);
+    int[] timekeys = int(timekey);
+    timekeys = sort(timekeys);
+    
+  /*for(int t = 0; t < timekeysint.length; t ++) {
+    String[] timekeys = append(timekeys, nf(timekeysint[i]));
+}*/
+    int timeweight = timekeys[0];
     noFill();
     beginShape();
+    print("/   /   /");
     for (int j=0; j < (xhandled.size()); j++){
       /*String timestamp = timekeys[j];
       int iterf = (height-(xhandled.getInt(timekeys[j])*((height-100)/6)));
@@ -43,17 +51,20 @@ void draw() {
       int xs = (int(timekeys[j+1])-(int(timekeys[j])));
       line( xf+50,iterf,xs+50,iters);
       */
-      int y = (height-(xhandled.getInt(timekeys[j])*((height-100)/6)));
+      int y = (height-(xhandled.getInt(str(timekeys[j]))*((height-100)/6)));
       int x = (int(timekeys[j])-timeweight);
-      vertex(x+50,y);
-      timeweight = int(timekeys[j]);
+      vertex(x+100,y);
       print(" x=");
-      print(timeweight);
+      print(timekeys[j]);
+
     }
     endShape();
+    print("                  ");
+    print(xhandled.size());
   }
 }
 
 void mousePressed() {
   redraw();
+  saveFrame("graphDeOuf.png");
 }
